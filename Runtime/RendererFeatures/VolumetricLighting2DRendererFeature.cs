@@ -184,6 +184,7 @@ class VolumetricLighting2DRendererFeature : ScriptableRendererFeature
 
         public VolumetricLighting2DPass() 
         {
+            m_ShaderTagIdList.Add(new ShaderTagId("Universal2D"));
             m_ShaderTagIdList.Add(new ShaderTagId("UniversalForward"));
             m_ShaderTagIdList.Add(new ShaderTagId("UniversalForwardOnly"));
             m_ShaderTagIdList.Add(new ShaderTagId("LightweightForward"));
