@@ -1,0 +1,22 @@
+{
+  "name": "com.weston-wright.volumetric-lighting-2d-urp",
+  "description": "Blurs a background image to create a volumetric lighting effect",
+  "version": "1.0.0",
+  "unity": "2021.3",
+  "unityRelease": "3f1",
+  "displayName": "Volumetric Lighting 2D URP",
+  "dependencies": {
+    "com.unity.render-pipelines.universal": "12.0.0",
+    "com.weston-wright.scriptable-renderer-helpers-urp": "1.0.0"
+  },
+  "keywords": [
+    "post-processing",
+    "lighting",
+    "light",
+    "volumetric"
+  ],
+  "author": {
+    "name": "Weston Wright",
+    "url": "https://github.com/westonwright"
+  }
+}
