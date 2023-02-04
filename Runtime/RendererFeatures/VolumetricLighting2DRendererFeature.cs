@@ -170,7 +170,8 @@ class VolumetricLighting2DRendererFeature : ScriptableRendererFeature
         private Material m_Volumetric2DMaterial;
         private Material m_OccludersMaterial;
         private readonly List<ShaderTagId> m_ShaderTagIdList = new List<ShaderTagId>();
-        private FilteringSettings m_OccluderFilteringSettings = new FilteringSettings(RenderQueueRange.opaque);
+        //private FilteringSettings m_OccluderFilteringSettings = new FilteringSettings(RenderQueueRange.opaque);
+        private FilteringSettings m_OccluderFilteringSettings = new FilteringSettings(RenderQueueRange.all);
         RenderTargetIdentifier m_OccludersTextureTarget;
         private ProfilingSampler m_ProfilingSampler = null;
         private ScriptableRenderer m_Renderer = null;
@@ -231,13 +232,13 @@ class VolumetricLighting2DRendererFeature : ScriptableRendererFeature
             CommandBuffer cmd = CommandBufferPool.Get(m_CurrentSettings.ProfilerTag);
             using (new ProfilingScope(cmd, m_ProfilingSampler))
             {
-                cmd.SetRenderTarget(m_OccludersTextureTarget);
+                //cmd.SetRenderTarget(m_OccludersTextureTarget);
 
-                //Camera camera = renderingData.cameraData.camera;
-                //context.DrawSkybox(camera);
                 cmd.Blit(m_CurrentSettings.LightTexture, m_OccludersTextureTarget);
+                context.ExecuteCommandBuffer(cmd);
+                cmd.Clear();
 
-                DrawingSettings drawSettings = CreateDrawingSettings(m_ShaderTagIdList, ref renderingData, SortingCriteria.CommonOpaque);
+                DrawingSettings drawSettings = CreateDrawingSettings(m_ShaderTagIdList, ref renderingData, SortingCriteria.CommonTransparent);
                 drawSettings.overrideMaterial = m_OccludersMaterial;
 
                 context.DrawRenderers(renderingData.cullResults, ref drawSettings, ref m_OccluderFilteringSettings);
