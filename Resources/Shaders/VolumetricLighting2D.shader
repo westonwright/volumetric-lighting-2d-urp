@@ -3,6 +3,7 @@ Shader "Hidden/VolumetricLighting2D/VolumetricLighting2D"
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
+        _Color("Main Color", Color) = (1.0, 1.0, 1.0, 1.0)
         _Samples("Samples", Range(0,256)) = 128
         _BlurWidth("Blur Width", Range(0,1)) = 0.85
         _Intensity("Intensity", Range(0,1)) = 1
@@ -41,6 +42,7 @@ Shader "Hidden/VolumetricLighting2D/VolumetricLighting2D"
             sampler2D _MainTex;
             float4 _MainTex_ST;
 
+            float4 _Color;
             int _Samples;
             float _BlurWidth;
             float _Intensity;
@@ -64,7 +66,7 @@ Shader "Hidden/VolumetricLighting2D/VolumetricLighting2D"
                 for (int i = 0; i < numSamples; i++)
                 {
                     float scale = 1.0f - _BlurWidth * (float(i) / float(numSamples - 1));
-                    color.xyz += tex2D(_MainTex, (ray * scale) + _Center.xy).xyz / float(numSamples);
+                    color.xyz += tex2D(_MainTex, (ray * scale) + _Center.xy).xyz * _Color.xyz / float(numSamples);
                 }
 
                 return color * _Intensity;

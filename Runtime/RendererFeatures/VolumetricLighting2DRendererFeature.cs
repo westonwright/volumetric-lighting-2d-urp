@@ -23,6 +23,13 @@ class VolumetricLighting2DSettings
         get => _LightTexture;
         set => _LightTexture = value;
     }
+    [SerializeField]
+    private Color _Color = Color.white;
+    public Color Color
+    {
+        get => _Color;
+        set => _Color = value;
+    }
     [Range(-1.0f, 1.0f)]
     [SerializeField]
     private float _LightScreenPositionX = 0;
@@ -234,7 +241,7 @@ class VolumetricLighting2DRendererFeature : ScriptableRendererFeature
             {
                 //cmd.SetRenderTarget(m_OccludersTextureTarget);
 
-                cmd.Blit(m_CurrentSettings.LightTexture, m_OccludersTextureTarget);
+                cmd.Blit(m_CurrentSettings.LightTexture == null ? Texture2D.whiteTexture : m_CurrentSettings.LightTexture, m_OccludersTextureTarget);
                 context.ExecuteCommandBuffer(cmd);
                 cmd.Clear();
 
@@ -242,7 +249,8 @@ class VolumetricLighting2DRendererFeature : ScriptableRendererFeature
                 drawSettings.overrideMaterial = m_OccludersMaterial;
 
                 context.DrawRenderers(renderingData.cullResults, ref drawSettings, ref m_OccluderFilteringSettings);
-
+                
+                m_Volumetric2DMaterial.SetColor("_Color", m_CurrentSettings.Color);
                 m_Volumetric2DMaterial.SetVector("_Center", new Vector2(
                     (m_CurrentSettings.LightScreenPosition.x + 1.0f) / 2.0f,
                     (m_CurrentSettings.LightScreenPosition.y + 1.0f) / 2.0f));
